@@ -1,11 +1,11 @@
-import { get,post } from '../config/http.js'
+import { GET, POST } from '../api/index'
 
-export const login = (data) => {
-    return post({
-        url: '/user/login',
-        method: 'post',
-        data
-    })
+export const login = async (data) => {
+    return GET( '/user/login', data)
+}
+
+export const userList = async (data) => {
+    return GET('/user/list',data)
 }
 
 // export const logout = () => {

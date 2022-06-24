@@ -1,32 +1,13 @@
 <script setup>
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from './components/HelloWorld.vue'
 import { getCurrentInstance, onMounted, ref } from 'vue'
-import { login } from '../src/api/user'
-
 const { proxy } = getCurrentInstance()
-const data = ref({
-  name: 'Jo',
-  password: '12345',
-})
-const userLogin = ()=> {
-  handleLogin(data)
-}
-const handleLogin = (data) =>{
-  login(data).then( (res) => {
-    console.log(res)
-    if(res.code === 200 ) {
-
-    }
-  })
-}
 
 </script>
 
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <Button @click="userLogin">登录</Button>
+  <router-view></router-view>
 </template>
 
 <style>

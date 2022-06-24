@@ -3,9 +3,11 @@
  * */
 
 let db = require('../dbase/index')
+var bodyParser = require('body-parser');
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 exports.login = (req, res) => {
-    var sql = 'select * from user where name = ? and password = ? '
+    var sql = 'select * from user where name = ? and password = ?'
     db.query(sql, [req.query.name, req.query.password], (err, data) => {
         if(err) {
             return res.send({

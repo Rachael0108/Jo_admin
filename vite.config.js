@@ -26,7 +26,7 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     ssr: false,
-    base: './',
+    base: '/',
     outDir: 'dist',
     proxy: {
       '/api': {
