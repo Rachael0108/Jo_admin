@@ -19,7 +19,7 @@ import store from '../store/index';
     instance.interceptors.request.use(
         (config) => {
             if (store.getters['user/accessToken']) {
-                config.headers[tokenName] = store.getters['user/accessToken'];
+                config.headers['Access-Token'] = store.getters['user/accessToken'];
             }
             if (
                 config.data &&

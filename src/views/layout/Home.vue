@@ -1,30 +1,14 @@
+<script lang="ts" setup>
+</script>
 
 <template>
-  <el-button @click="handleLogin">登录</el-button>
+  <div class="flex">
+    <el-button color="#626aef" >Default</el-button>
+    <el-button color="#626aef"  plain>Plain</el-button>
+
+    <el-button color="#626aef" disabled>Disabled</el-button>
+    <el-button color="#626aef"  disabled plain
+    >Disabled Plain</el-button
+    >
+  </div>
 </template>
-
-<script setup>
-import { getCurrentInstance, onMounted, ref } from 'vue';
-import { login, userList } from '../../api/user';
-
-const { proxy } = getCurrentInstance()
-
-const handleLogin = () =>{
-  let data = {
-    name: 'Jo',
-    password: 'admin',
-  }
-  login(data).then( (res) => {
-    console.log(data)
-    console.log(res)
-  })
-}
-const getUserList = () => {
-  userList().then((res) => {
-    console.log(res)
-  })
-}
-onMounted(()=>{
-  getUserList()
-})
-</script>

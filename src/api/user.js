@@ -9,7 +9,7 @@ export const userList = async (data) => {
 }
 
 // export const logout = () => {
-//     return request({
+//     return request(
 //         url: '/logout',
 //         method: 'post',
 //     });

@@ -7,8 +7,8 @@ var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 exports.login = (req, res) => {
-    var sql = 'select * from user where name = ? and password = ?'
-    db.query(sql, [req.query.name, req.query.password], (err, data) => {
+    var sql = 'select * from user where account = ? and password = ?'
+    db.query(sql, [req.query.account, req.query.password], (err, data) => {
         if(err) {
             return res.send({
                 status: 400,
@@ -22,6 +22,8 @@ exports.login = (req, res) => {
                 message: "登录成功"
             })
         }else{
+            console.log(data)
+
             res.send({
                 status: 202,
                 message: '用户名或密码错误'
