@@ -27,7 +27,7 @@ router.beforeEach((to,from,next) => {
     const tokenStartTime = localStorage.getItem('tokenStartTime')
     //设置token 6 天过期
     const convertTime = 6 * 24 * 3600 * 1000
-    let data = new Date.getTime()
+    let data = (new Date()).getTime()
     if( data - tokenStartTime > convertTime){
         token = null
     }

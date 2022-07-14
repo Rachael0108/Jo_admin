@@ -70,7 +70,7 @@ export function throttle(
         } else if (isLastExec) {
             t && clearTimeout(t);
             t = setTimeout(() => {
-                cb.apply(this, args);
+                cb.apply(this, args);  //this指向cb函数所在的上下文
                 last = Date.now(); //需要重新获取now并刷新last防止最后一次执行后新触发事件时立马执行
             }, interval);
         }
@@ -92,18 +92,20 @@ export function debounce(cb, time = 3000, isImmediately = false) {
         } else {
             t = setTimeout(() => {
                 //重新设定最新一次触发事件的定时器
-                cb.apply(this, args); //time内不再触发,即t不被clear，那么time后执行一次回调cb
+                //debounce调用时的函数的上下文存在 this = undefined 情况，需要更改this指向
+                cb.apply(this, args);
+                //time内不再触发,即t不被clear，那么time后执行一次回调cb
             }, time);
         }
     };
 }
 
+//深度拷贝后，修改拷贝对象，被拷贝的对象不熟影响
 export function deepClone(origin, target) {
     var tar = target || {},
-        toStr = Object.prototype.toString,
-        arrType = "[object Array]";
-
+        toStr = Object.prototype.toString,  arrType = "[object Array]";
     for (var key in origin) {
+        console.log(key)
         if (origin.hasOwnProperty(key)) {
             if (typeof origin[key] === "object" && origin[key] !== null) {
                 toStr.call(origin[key]) === arrType ? (tar[key] = []) : (tar[key] = {});
@@ -114,4 +116,30 @@ export function deepClone(origin, target) {
         }
     }
     return tar;
+}
+
+// 是否为空对象
+export function isEmpty(origin) {
+    return Reflect.ownKeys(origin).length === 0 && origin.constructor === Object
+}
+
+//  数组去重
+export function unique(arr){
+    return Array.from(new Set(arr))
+}
+
+// 扁平化数组： 将深层嵌套展开
+// 1. ES6 自带API
+export function flatten(params) {
+    return params.flat(Infinity)
+}
+
+//2. 递归实现
+export function flattenBy(arr) {
+    let result = []
+    for(let i = 0; i< arr.length; i++) {
+        if(Array.isArray(arr[i])) result = result.concat(flattenBy(arr[i]))
+        else result.push(arr[i])
+    }
+    return result
 }
