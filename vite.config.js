@@ -22,6 +22,10 @@ export default defineConfig({
       'VUE_APP_SIGN': ''
     }
   },
+  test: {
+    global: true,
+    environment: 'happy-dom'
+  },
   //反向代理
   server: {
     host: '0.0.0.0',

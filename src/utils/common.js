@@ -6,6 +6,7 @@ const TokenKey = "authorized-token";
 export function getToken() {
     return Cookies.get(TokenKey)
 }
+
 //移除token
 export function removeToken() {
     Cookies.remove(TokenKey)
@@ -103,7 +104,7 @@ export function debounce(cb, time = 3000, isImmediately = false) {
 //深度拷贝后，修改拷贝对象，被拷贝的对象不熟影响
 export function deepClone(origin, target) {
     var tar = target || {},
-        toStr = Object.prototype.toString,  arrType = "[object Array]";
+        toStr = Object.prototype.toString, arrType = "[object Array]";
     for (var key in origin) {
         console.log(key)
         if (origin.hasOwnProperty(key)) {
@@ -124,11 +125,11 @@ export function isEmpty(origin) {
 }
 
 //  数组去重
-export function unique(arr){
+export function unique(arr) {
     return Array.from(new Set(arr))
 }
 
-// 扁平化数组： 将深层嵌套展开
+// 扁平化数组: 将深层嵌套展开
 // 1. ES6 自带API
 export function flatten(params) {
     return params.flat(Infinity)
@@ -137,9 +138,78 @@ export function flatten(params) {
 //2. 递归实现
 export function flattenBy(arr) {
     let result = []
-    for(let i = 0; i< arr.length; i++) {
-        if(Array.isArray(arr[i])) result = result.concat(flattenBy(arr[i]))
+    for (let i = 0; i < arr.length; i++) {
+        if (Array.isArray(arr[i])) result = result.concat(flattenBy(arr[i]))
         else result.push(arr[i])
     }
     return result
+}
+
+//设置过期时间
+//超时则返回true
+export function setPass(deadline) {
+    // deadline: '2022-8-5'
+    let passTime = new Date(deadline)
+    let date = new Date()
+    return passTime.getTime() <= date.getTime()
+}
+
+//给树节点父子节点 disabled 属性
+export function reConstructorTree(data) {
+    return data.map((item) => {
+        if (item.children) {
+            return {
+                ...item,
+                children: reConstructorTree(item.children),
+                disabled: false
+            }
+        } else {
+            return {
+                ...item,
+                disabled: false
+            }
+        }
+    })
+}
+
+//通过hasOwnProperty数组去重
+export function uniqueOfHasOwnProperty(arr) {
+    let obj = {};
+    return arr.filter((item) => {
+        console.log(typeof item + item)  // number1, stringtrue,booleantrue......
+        return obj.hasOwnProperty(typeof item + item) ? false : (obj[typeof item + item] = true)  //  hasOwnProperty(number1)
+    })
+}
+
+//前端处理关键字搜索，仅适用于少量数据
+//query: 查询内容  key：查询属性， array：查询原数组
+export function keyWord(query, key, array) {
+    let newArr = []
+    newArr = array.filter(item => {
+        return item.key.indexOf(query) >= 0 ? item : ''
+    })
+    return newArr;
+}
+
+/**
+ * @instance--可以判断对象是否是实例--可以判断所有基本类型
+ * @Object.prototype.toString.call--可以被重写--无法判断自定义的实例对象
+ * */
+
+//封装localStorage
+//存取
+export function localSet(key, value) {
+    window.localStorage.setItem(key, JSON.stringify(value))
+}
+export function localGet(key) {
+    const value = window.localStorage.getItem(key)
+    try {
+        return JSON.parse(window.localStorage.getItem(key))
+    }catch (error){
+        return value
+    }
+}
+//删除
+export function localRemove(key) {
+    window.localStorage.removeItem(key)
 }

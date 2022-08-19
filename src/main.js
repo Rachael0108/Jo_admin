@@ -6,12 +6,17 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 import router from './router/index'
 import { Dialog } from 'vant';
 import * as Icons from '@element-plus/icons-vue'
+import Particles from 'particles.vue3';
+import * as XLSX from 'xlsx';
+
+
 
 const app = createApp(App)
 for (const [key, component] of Object.entries(Icons)) {
     app.component(key, component)
 }
-app.use(Dialog);
+app.use(Dialog)
+app.use(Particles)
 
 app.use(ElementPlus, { size: 'small', zIndex: 3000 })
 app.use(router)
