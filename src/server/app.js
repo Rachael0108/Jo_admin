@@ -23,6 +23,7 @@ app.all('*', function(req, res, next) {
 const port = process.env.PORT|| 80;
 
 app.listen(port, ()=>{
+    console.log(port)
     console.log('server success ！')
 })
 

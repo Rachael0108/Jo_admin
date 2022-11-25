@@ -1,18 +1,30 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
-    {
-        path: '/login',
-        name: 'Login',
-        component: () => import('../components/login/index.vue'),
-        meta: {
-            title: '登录',
-        },
-        hidden: true,
-    },
+    // {
+    //     path: '/',
+    //     redirect: '/login',
+    //     name: 'Login',
+    //     component: () => import('../components/login/index.vue'),
+    //     meta: {
+    //         title: '登录',
+    //     },
+    //     hidden: true,
+    // },
     {
         path: '/',
-        component: () => import('../views/layout/Home.vue')
+        component: () => import('../views/layout/Home.vue'),
+        name: 'Home',
+        children: [
+            {
+                path: '/baseComponent',
+                name: 'baseComponent',
+                component: () => import('@/views/baseComponent.vue'),
+                meta: {
+                    title: '组件',
+                },
+            },
+        ]
     },
 
 ]
@@ -33,11 +45,8 @@ router.beforeEach((to,from,next) => {
     }
     if(!token) {
         //如果token过期，重定向到登录页面
-        if(to.path === '/login') return next()
-        return next('/login')
-    }else if(to.path === '/login'){
-        //如果token未过期，直接进入首页
-        next('/Home')
+        // if(to.path === '/login') return next()
+        next()
     }else {
         next()
     }

@@ -1,13 +1,7 @@
 <template>
   <div id="login">
-    <!--引入粒子特效-->
-    <!--    <Particles-->
-    <!--        id="tsparticles"-->
-    <!--        :particlesLoaded="particlesLoaded"-->
-    <!--        :options="options"-->
-    <!--    />-->
-  </div>
   <canvas></canvas>
+  </div>
 </template>
 
 <script setup>

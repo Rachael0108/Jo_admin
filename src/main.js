@@ -8,6 +8,7 @@ import { Dialog } from 'vant';
 import * as Icons from '@element-plus/icons-vue'
 import Particles from 'particles.vue3';
 import * as XLSX from 'xlsx';
+import {Slider} from "vant";
 
 
 
@@ -20,6 +21,8 @@ app.use(Particles)
 
 app.use(ElementPlus, { size: 'small', zIndex: 3000 })
 app.use(router)
+app.use(Slider)
+
 
 app.mount('#app')
 // 引入 echarts 核心模块，核心模块提供了 echarts 使用必须要的接口。

@@ -78,6 +78,18 @@ export function throttle(
     };
 }
 
+//节流2
+export function throttleSim(fn, delay) {
+    let last = 0 // 上次触发时间
+    return function (...args) {
+        const now = Date.now()
+        if (now - last > delay) {
+            last = now
+            fn.apply(this, args)
+        }
+    }
+}
+
 //防抖，连续触发只会在最后一次触发事件延迟time内不再触发事件后执行回调一次
 //例如滚动屏幕scroll，不停的滚动只会在（1,需要停止滚动 2,且停止滚动后等待time内不再滚动）后执行一次回调
 export function debounce(cb, time = 3000, isImmediately = false) {
@@ -126,7 +138,9 @@ export function isEmpty(origin) {
 
 //  数组去重
 export function unique(arr) {
-    return Array.from(new Set(arr))
+    return [...new Set(arr)]
+    // 或者
+    // return Array.from(new Set(arr))
 }
 
 // 扁平化数组: 将深层嵌套展开
@@ -201,15 +215,26 @@ export function keyWord(query, key, array) {
 export function localSet(key, value) {
     window.localStorage.setItem(key, JSON.stringify(value))
 }
+
 export function localGet(key) {
     const value = window.localStorage.getItem(key)
     try {
         return JSON.parse(window.localStorage.getItem(key))
-    }catch (error){
+    } catch (error) {
         return value
     }
 }
+
 //删除
 export function localRemove(key) {
     window.localStorage.removeItem(key)
 }
+
+// 获取路由中的参数
+export function getParams() {
+    // 创建一个URLSearchParams实例
+    const urlSearchParams = new URLSearchParams(window.location.search);
+// 把键值对列表转换为一个对象
+    const params = Object.fromEntries(urlSearchParams.entries());
+}
+
