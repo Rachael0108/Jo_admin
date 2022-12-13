@@ -1,31 +1,36 @@
 <template>
-  <div className="outer">
-
-  </div>
+<div class="outer">
+</div>
 </template>
 
 <script setup name="otherPage">
-import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import * as THREE from "https://cdn.skypack.dev/three@0.136.0";
+import {OrbitControls} from "https://cdn.skypack.dev/three@0.136.0/examples/jsm/controls/OrbitControls";
+import {onDeactivated, onErrorCaptured} from "vue";
 
-console.clear()
+console.clear();
+
 let scene = new THREE.Scene();
-scene.background = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 1, 1000)
+scene.background = new THREE.Color(0x160016);
+let camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 1, 1000);
 camera.position.set(0, 4, 21);
 let renderer = new THREE.WebGLRenderer();
 renderer.setSize(innerWidth, innerHeight);
 document.body.appendChild(renderer.domElement);
 window.addEventListener("resize", event => {
-  camera.aspect = innerWidth / innerHeight
+  camera.aspect = innerWidth / innerHeight;
   camera.updateProjectionMatrix();
-  renderer.setSize(innerWidth, innerHeight)
+  renderer.setSize(innerWidth, innerHeight);
 })
 
 let controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.enablePan = false;
+
 let gu = {
   time: {value: 0}
 }
+
 let sizes = [];
 let shift = [];
 let pushShift = () => {
@@ -34,21 +39,22 @@ let pushShift = () => {
       Math.random() * Math.PI * 2,
       (Math.random() * 0.9 + 0.1) * Math.PI * 0.1,
       Math.random() * 0.9 + 0.1
-  )
+  );
 }
-let pts = new Array(5000).fill().map(p => {
+let pts = new Array(50000).fill().map(p => {
   sizes.push(Math.random() * 1.5 + 0.5);
   pushShift();
-  return new THREE.Vector3().randomDirection().multiplyScalar(Math.random() * 0.5 + 0.5)
+  return new THREE.Vector3().randomDirection().multiplyScalar(Math.random() * 0.5 + 9.5);
 })
-for (let i = 0; i < 100000; i++) {
+for(let i = 0; i < 100000; i++){
   let r = 10, R = 40;
   let rand = Math.pow(Math.random(), 1.5);
   let radius = Math.sqrt(R * R * rand + (1 - rand) * r * r);
-  pts.push(new THREE.Vector3().setFromCylindricalCoords(radius, Math.random() * 2 * Math.PI, (Math.random() - 0.5) * 2));
+  pts.push(new THREE.Vector3().setFromCylindricalCoords(radius, Math.random() * 2 * Math.PI, (Math.random() - 0.5) * 2 ));
   sizes.push(Math.random() * 1.5 + 0.5);
   pushShift();
 }
+
 let g = new THREE.BufferGeometry().setFromPoints(pts);
 g.setAttribute("sizes", new THREE.Float32BufferAttribute(sizes, 1));
 g.setAttribute("shift", new THREE.Float32BufferAttribute(shift, 4));
@@ -105,7 +111,9 @@ let p = new THREE.Points(g, m);
 p.rotation.order = "ZYX";
 p.rotation.z = 0.2;
 scene.add(p)
+
 let clock = new THREE.Clock();
+
 renderer.setAnimationLoop(() => {
   controls.update();
   let t = clock.getElapsedTime() * 0.5;
@@ -113,6 +121,32 @@ renderer.setAnimationLoop(() => {
   p.rotation.y = t * 0.05;
   renderer.render(scene, camera);
 });
+onDeactivated(()=>{
+  clearScene()
+})
+const clearScene = () => {
+  {
+   scene.traverse((child) => {
+      if (child.material) {
+        child.material.dispose();
+      }
+      if (child.geometry) {
+        child.geometry.dispose();
+      }
+      child = null;
+    });
+
+    renderer.forceContextLoss();
+    renderer.dispose();
+    scene.clear();
+    scene = null;
+    camera = null;
+    controls = null;
+    renderer.domElement = null;
+    renderer = null;
+    console.log('clearScene');
+  }
+}
 </script>
 <style lang="scss" scoped>
 

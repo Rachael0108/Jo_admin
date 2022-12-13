@@ -24,6 +24,38 @@ const routes = [
                     title: '组件',
                 },
             },
+            {
+                path: '/typeScriptLearn',
+                name: 'typeScriptLearn',
+                component: () => import('@/views/typeScriptLearn.vue'),
+                meta: {
+                    title: 'ts学习',
+                },
+            },
+            {
+                path: '/editRowTable',
+                name: 'editRowTable',
+                component: () => import('@/views/editRowTable.vue'),
+                meta: {
+                    title: '可编辑列',
+                },
+            },
+            {
+                path: '/mapPage',
+                name: 'mapPage',
+                component: () => import('@/views/mapPage.vue'),
+                meta: {
+                    title: '高德地图',
+                },
+            },
+            {
+                path: '/threeEarth',
+                name: 'threeEarth',
+                component: () => import('@/views/earth.vue'),
+                meta: {
+                    title: '3D地球',
+                },
+            },
         ]
     },
 

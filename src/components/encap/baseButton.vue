@@ -1,5 +1,5 @@
-<template>
-  <button>open</button>
+<template>  <button>open</button>
+
 </template>
 <script setup>
 

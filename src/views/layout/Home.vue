@@ -60,59 +60,95 @@
       </el-col>
       <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11"
       >
-       <div class="contents">
-         <router-view v-slot="{ Component }">
-             <component :is="Component" />
-         </router-view>
-       </div>
+        <div class="contents">
+          <el-breadcrumb separator="/">
+            <el-breadcrumb-item :to="{ path: '/' }">home</el-breadcrumb-item>
+            <el-breadcrumb-item
+            ><a href="/">{{breadCrumb}}</a></el-breadcrumb-item
+            >
+          </el-breadcrumb>
+          <router-view v-slot="{ Component }">
+            <keep-alive>
+              <component :is="Component" />
+            </keep-alive>
+          </router-view>
+        </div>
       </el-col>
     </el-row>
   </div>
-<!--  <div style="display: flex">-->
-<!--    <el-scrollbar ref="scrollbarRef" height="400px" style="width: 200px" always @scroll="scroll">-->
-<!--      <div ref="innerRef" style="width: 200px">-->
-<!--        <p v-for="item in 20" :key="item" class="scrollbar-demo-item">-->
-<!--          {{ item }}-->
-<!--        </p>-->
-<!--      </div>-->
-<!--    </el-scrollbar>-->
+  <!--  <div styles="display: flex">-->
+  <!--    <el-scrollbar ref="scrollbarRef" height="400px" styles="width: 200px" always @scroll="scroll">-->
+  <!--      <div ref="innerRef" styles="width: 200px">-->
+  <!--        <p v-for="item in 20" :key="item" class="scrollbar-demo-item">-->
+  <!--          {{ item }}-->
+  <!--        </p>-->
+  <!--      </div>-->
+  <!--    </el-scrollbar>-->
 
-<!--    <div :style="{ height: '150px' }">-->
-<!--      <van-slider v-model="value" vertical @change="handleSlider" />-->
-<!--    </div>-->
-<!--  </div>-->
+  <!--    <div :styles="{ height: '150px' }">-->
+  <!--      <van-slider v-model="value" vertical @change="handleSlider" />-->
+  <!--    </div>-->
+  <!--  </div>-->
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted} from 'vue';
+import {ref, onMounted, computed} from 'vue';
 import {useRouter} from 'vue-router';
 import { ElScrollbar } from 'element-plus'
-  const count = ref(0)
-  const router = useRouter()
-  const increment = () => count.value++
+const count = ref(0)
+const router = useRouter()
+const breadCrumb = computed(()=>{
+  return router.currentRoute.value.meta.title
+})
+const increment = () => count.value++
 const menuList  = ref([
+  // {
+  //   name: '组件封装',
+  //   id: '1',
+  //   icon: 'Setting',
+  //   children: [
+  //     {
+  //       name: 'baseComponent',
+  //       parent_id: '1',
+  //       id: '12',
+  //       route: 'baseComponent',
+  //     }
+  //   ]
+  // },
   {
-    name: '组件封装',
-    id: '1',
-    icon: 'Setting',
-    children: [
-      {
-        name: 'baseComponent',
-        parent_id: '1',
-        id: '12',
-        route: 'baseComponent',
-      }
-    ]
-  }, {
-    name: '其他',
+    name: 'typeScript学习',
     id: '2',
     icon: 'Location',
-    route: '/',
+    route: 'typeScriptLearn',
+  },
+  {
+    name: '高德地图',
+    id: '3',
+    icon: 'Location',
+    route: 'mapPage',
+  },
+  {
+    name: '可编辑列',
+    id: '4',
+    icon: 'Location',
+    route: 'editRowTable',
+  },
+  {
+    name: '3D地球',
+    id: '5',
+    icon: 'Location',
+    route: 'threeEarth',
   }
 ])
+onMounted(()=>{
+
+})
 </script>
 <style>
 .el-menu-vertical-demo {
   width: 200px;
+}
+.contents {
+  padding: 5rem;
 }
 </style>

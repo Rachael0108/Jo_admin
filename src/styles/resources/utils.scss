@@ -1,0 +1,23 @@
+// 文字超出隐藏，默认为单行超出隐藏，可设置多行
+@mixin text-overflow($line: 1, $fixed-width: true) {
+  @if $line ==1 and $fixed-width ==true {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @else {
+    /* stylelint-disable-next-line value-no-vendor-prefix */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $line;
+    overflow: hidden;
+  }
+}
+
+@mixin flex($align: center, $middle: center, $direction: row) {
+  display: flex;
+  align-items: $align;
+  justify-content: $middle;
+  flex-direction: $direction;
+}

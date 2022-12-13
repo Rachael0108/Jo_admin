@@ -51,31 +51,22 @@ export function myTypeof(val) {
 
 //节流，连续触发只会在每time时间段内执行回调
 //例如滚动屏幕scroll，不停的滚动只会在[0,time]，[time+1,time*2]，...每个time时间段内分别执行一次回调
-export function throttle(
-    cb,
-    interval,
-    isImmediately = true,
-    isLastExec = false
-) {
-    //isImmediately是否首次触发事件马上执行回调，否的话则等到下个time时间段再执行
-    //isLastExec是否执行最后一次
-    let last = isImmediately ? 0 : Date.now();
-    let t = null;
-    return function () {
-        const args = arguments;
-        const now = Date.now(); //当前时间戳
-        if (now - last > interval) {
-            //上次执行的时间戳减去当前触发事件的时间戳大于设定的间隔
-            cb.apply(this, args);
-            last = now; //回调后更新最新一次执行的时间戳
-        } else if (isLastExec) {
-            t && clearTimeout(t);
-            t = setTimeout(() => {
-                cb.apply(this, args);  //this指向cb函数所在的上下文
-                last = Date.now(); //需要重新获取now并刷新last防止最后一次执行后新触发事件时立马执行
-            }, interval);
+export function throttle(func, wait, mustRun){
+    let timeout,
+        startTime = new Date();
+    return function() {
+        let context = this,
+            args = arguments,
+            curTime = new Date();
+        clearTimeout(timeout);
+        //用户滚动的时间大于必须执行的之间了，就强制执行一次
+        if(curTime - startTime >= mustRun) {
+            func.apply(context, args)
+            startTime = curTime
+        }else {
+            timeout = setTimeout(func, wait)
         }
-    };
+    }
 }
 
 //节流2
